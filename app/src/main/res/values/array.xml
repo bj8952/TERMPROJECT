@@ -2,7 +2,7 @@
 <resources>
 
     <string-array name = "todo_list">
-<item>밥먹기</item>
+        <item>밥먹기</item>
         <item>tv보기</item>
         <item>공부하기</item>
     </string-array>
