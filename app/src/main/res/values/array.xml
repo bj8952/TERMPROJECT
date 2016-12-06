@@ -3,7 +3,13 @@
 
     <string-array name = "todo_list">
         <item>밥먹기</item>
-        <item>tv보기</item>
+        <item>간식먹기</item>
+        <item>게임</item>
+        <item>쇼핑</item>
+        <item>TV시청</item>
         <item>공부하기</item>
+        <item>과제하기</item>
+        <item>영화보기</item>
+        <item>운동하기</item>
     </string-array>
 </resources>

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.database.sqlite.SQLiteStatement;
 
 import com.google.android.gms.maps.model.LatLng;
 
@@ -24,9 +25,9 @@ public class DBHelper extends SQLiteOpenHelper {
     @Override
     public void onCreate(SQLiteDatabase db) {
         // 새로운 테이블 생성
-        /* 이름은 MONEYBOOK이고, 자동으로 값이 증가하는 _id 정수형 기본키 컬럼과
+        /* LOGGER 라는 테이블명 / 자동으로 값이 증가하는 _id 정수형 기본키 컬럼과
         item 문자열 컬럼, price 정수형 컬럼, create_at 문자열 컬럼으로 구성된 테이블을 생성. */
-        db.execSQL("CREATE TABLE LOGGER (_id INTEGER PRIMARY KEY AUTOINCREMENT, item TEXT, create_at TEXT, lat INTEGER, lon INTEGER , event TEXT );");
+        db.execSQL("CREATE TABLE LOGGER (_id INTEGER PRIMARY KEY AUTOINCREMENT, item TEXT, create_at TEXT, lat INTEGER, lon INTEGER , event TEXT , photo BLOB );");
 
 
     }
@@ -37,11 +38,22 @@ public class DBHelper extends SQLiteOpenHelper {
 
     }
 
-    public void insert(String create_at, String item, double lat, double lon , String event) {
+    public void insert(String create_at, String item, double lat, double lon , String event , byte[] photo) {
         // 읽고 쓰기가 가능하게 DB 열기
         SQLiteDatabase db = getWritableDatabase();
+        SQLiteStatement p = db.compileStatement("INSERT INTO LOGGER VALUES(?,?,?,?,?,?,?);");
+
         // DB에 입력한 값으로 행 추가
-        db.execSQL("INSERT INTO LOGGER VALUES(null, '" + item + "', '" + create_at+ "', "+lat +","+ lon + ", '"+event+ "');");
+        // db.execSQL("INSERT INTO LOGGER VALUES(null, '" + item + "', '" + create_at+ "', "+lat +","+ lon + ", '"+event+ "','"+ photo+"');");
+        p.bindNull(1);
+        p.bindString(2,create_at);
+        p.bindString(3,item);
+        p.bindDouble(4,lat);
+        p.bindDouble(5,lon);
+        p.bindString(6,event);
+        p.bindBlob(7,photo);
+        p.execute();
+        p.close();
         db.close();
     }
 
@@ -59,29 +71,6 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public String getResult() {
-        // 읽기가 가능하게 DB 열기
-        SQLiteDatabase db = getReadableDatabase();
-        String result = "";
-
-        // DB에 있는 데이터를 쉽게 처리하기 위해 Cursor를 사용하여 테이블에 있는 모든 데이터 출력
-        Cursor cursor = db.rawQuery("SELECT * FROM LOGGER", null);
-        while (cursor.moveToNext()) {
-            result += cursor.getString(0)
-                    + " : "
-                    + cursor.getString(1)
-                    + " | "
-                    + cursor.getString(2)
-                    + "\n"
-                    + cursor.getFloat(3)
-                    + ": 위도 "
-                    + cursor.getFloat(4)
-                    + ": 경도 ";
-
-        }
-
-        return result;
-    }
 
     public ArrayList<LatLng> getPosition() {
         // 읽기가 가능하게 DB 열기
@@ -93,7 +82,7 @@ public class DBHelper extends SQLiteOpenHelper {
         // DB에서 위도와 경도를 출력하여 LatLng로 저장하고 ArrayList에 모두 저장함
         Cursor cursor = db.rawQuery("SELECT * FROM LOGGER", null);
         while (cursor.moveToNext()) {
-           double lat = cursor.getDouble(5);
+           double lat = cursor.getDouble(3);
            double lon = cursor.getDouble(4);
             LatLng A = new LatLng(lat,lon);
 
@@ -101,11 +90,19 @@ public class DBHelper extends SQLiteOpenHelper {
 
 
        }
+
+        //테스트용
         LatLng L1 = new LatLng(37.6, 127.1);
         LatLng L2 = new LatLng(37.601, 127.101);
+        LatLng L3 = new LatLng(37.601, 127.102);
+        LatLng L4 = new LatLng(37.602, 127.102);
+        LatLng L5 = new LatLng(37.604, 127.103);
 
         result.add(L1);
         result.add(L2);
+        result.add(L3);
+        result.add(L4);
+        result.add(L5);
 
 
 

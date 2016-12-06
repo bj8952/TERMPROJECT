@@ -6,17 +6,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -38,6 +42,14 @@ import java.util.List;
 
 public class MainActivity extends Activity implements OnMapReadyCallback, LocationListener {
 
+
+    public static final int CAMERA_REQUEST = 10;
+    private ImageView imgSpecimenPhoto;
+    Bitmap cameraImage = null;
+    BitmapCh btb = new BitmapCh();/////비트맵 db에 저장하기 위해 바이트로 변환
+    byte[] ImgTB ;
+
+
     Spinner todoSpinner;
     String spin_text;
 
@@ -57,13 +69,36 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
      */
     private GoogleApiClient client;
 
+    ////사진 불러오기 기능
+    public void btnTakePhotoClicked(View v){
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, CAMERA_REQUEST);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        //유저가 오케이를 눌렀으면 실행
+        if(resultCode== RESULT_OK) {
+            if (requestCode == CAMERA_REQUEST) {
+                // we are hearing back from camera
+
+                cameraImage = (Bitmap)data.getExtras().get("data");
+
+                imgSpecimenPhoto.setImageBitmap(cameraImage);
+
+                ImgTB= btb.bitmapToByteArray(cameraImage); // 비트맵을 바이트로 저장
+            }
+        }
+    }
+////////////////////////
 
     @Override
     public void onMapReady(final GoogleMap map) {
 
         googleMap = map;
 
-        googleMap.addMarker(new MarkerOptions().position(SEOUL).title("서울"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(SEOUL, 17.0f));
     }
 
@@ -72,6 +107,12 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        //카메라
+        imgSpecimenPhoto = (ImageView) findViewById(R.id.imgSpecimenPhoto);
+        ImageButton btn_Photo = (ImageButton)findViewById(R.id.btnTakePhoto);
+
+
+        //화면넘기기
         Button btn_next = (Button)findViewById(R.id.btn_next);
         btn_next.setOnClickListener(new View.OnClickListener(){
 
@@ -91,6 +132,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
         final EditText eventT = (EditText) findViewById(R.id.editText2);
 
         Button button1 = (Button) findViewById(R.id.button1);
+
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -107,7 +149,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
                 String event = eventT.getText().toString();
 
 
-                dbHelper.insert(date, item, Lat, Lon, event);
+                dbHelper.insert(date, item, Lat, Lon, event,ImgTB);
 
                 Toast.makeText(MainActivity.this, "제출하였습니다.", Toast.LENGTH_SHORT).show();
 
@@ -191,6 +233,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
 
         LatLng S = new LatLng(lat, lon);
 
+        googleMap.clear();
         googleMap.addMarker(new MarkerOptions().position(S).title("현재위치"));
         googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(S, 17.0f));
 

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.SimpleCursorAdapter;
 
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
@@ -25,6 +24,10 @@ import java.util.ArrayList;
 public class Main2Activity extends Activity implements OnMapReadyCallback {
 
 
+    ListView list;
+    DBHelper dbHelper;
+    Cursor cursor;
+    SQLiteDatabase db;
 
     ArrayList<LatLng> Loc = new ArrayList<LatLng>();
 
@@ -42,10 +45,15 @@ public class Main2Activity extends Activity implements OnMapReadyCallback {
     private GoogleApiClient client;
 
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState)  {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main2);
+
+        dbHelper = new DBHelper(getApplicationContext(), "LoggerDB.db", null, 1);
+        list = (ListView) findViewById(R.id.list);
+         selectDB(); //DB가져오기
 
 
 
@@ -67,51 +75,34 @@ public class Main2Activity extends Activity implements OnMapReadyCallback {
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.googleMap2);
         mapFragment.getMapAsync(this);
 
-        final DBHelper dbHelper = new DBHelper(getApplicationContext(), "LoggerDB.db", null, 1);
-
         Loc = dbHelper.getPosition();
 
-        Cursor cursor;
-
-
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-
-
-        cursor = db.rawQuery("SELECT * FROM LOGGER", null);
-
-        startManagingCursor(cursor);
-
-
-        SimpleCursorAdapter adapter;
-
-        adapter = new SimpleCursorAdapter(this,
-                R.layout.itemlayout , //아이템레이아웃.xml을 만들어서 사용함
-                cursor,
-                new String[] {"create_at", "item" ,"event"}, new int[] { R.id.text1,R.id.text2,R.id.text3 });
-
-
-
-        ListView list = (ListView) findViewById(R.id.list_view);
-
-        list.setAdapter(adapter);
 
     }
+
+
+    public void selectDB(){
+        db = dbHelper.getWritableDatabase();
+
+        cursor = db.rawQuery("SELECT * FROM LOGGER", null);
+        if(cursor.getCount() > 0) {
+            startManagingCursor(cursor);
+            DBAadapter dbAdapter = new DBAadapter(this, cursor);
+            list.setAdapter(dbAdapter);
+        }
+    }
+
 
     @Override
     public void onMapReady(GoogleMap map) {
 
         googleMap = map;
 
-        googleMap.addMarker(new MarkerOptions().position(L1).title("L1"));
+        for(int i =0 ; i < Loc.size() ; i++){
 
-        googleMap.addMarker(new MarkerOptions().position(L2).title("L2"));
+            googleMap.addMarker(new MarkerOptions().position(Loc.get(i)).title("TEST SPOT"));
+        }
 
-        googleMap.addMarker(new MarkerOptions().position(L3).title("L3"));
-
-        googleMap.addMarker(new MarkerOptions().position(L4).title("L4"));
-
-        googleMap.addMarker(new MarkerOptions().position(L5).title("L5"));
 
         googleMap.addPolyline(new PolylineOptions().addAll(Loc).width(5).color(Color.GREEN)); // 선으로 표시
 
