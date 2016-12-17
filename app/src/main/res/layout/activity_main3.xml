@@ -78,6 +78,7 @@
             android:layout_weight="1"
             android:onClick="myOnClick"
             android:text="시작"
+            android:textColor="#777777"
             style="@style/Widget.AppCompat.Button.Colored" />
 
         <Button
@@ -87,6 +88,7 @@
             android:layout_weight="1"
             android:onClick="myOnClick"
             android:text="기록"
+            android:textColor="#777777"
             android:enabled="false"
 
             style="@style/Widget.AppCompat.Button.Colored" />
