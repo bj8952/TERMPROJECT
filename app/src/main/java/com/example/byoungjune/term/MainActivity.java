@@ -14,12 +14,10 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
-import android.util.Log;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -47,7 +45,7 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
     private ImageView imgSpecimenPhoto;
     Bitmap cameraImage = null;
     BitmapCh btb = new BitmapCh();/////비트맵 db에 저장하기 위해 바이트로 변환
-    byte[] ImgTB ;
+    byte[] ImgTB;
 
 
     Spinner todoSpinner;
@@ -107,26 +105,47 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
+           startActivity(new Intent(this, SplashActivity.class));
+
+
+
         //카메라
         imgSpecimenPhoto = (ImageView) findViewById(R.id.imgSpecimenPhoto);
-        ImageButton btn_Photo = (ImageButton)findViewById(R.id.btnTakePhoto);
+        Button btn_Photo = (Button)findViewById(R.id.btnTakePhoto);
 
 
         //화면넘기기
         Button btn_next = (Button)findViewById(R.id.btn_next);
         btn_next.setOnClickListener(new View.OnClickListener(){
 
-            @Override
-            public void onClick(View v){
-                Intent intent = new Intent(
-                        getApplicationContext(), // 현재 화면의 제어권자이다.
-                        Main2Activity.class); // 넘어갈 클래스를 지정한다.
-                startActivity(intent); // 다음 화면으로 넘어간다.
+                                        @Override
+                                        public void onClick(View v){
+                                            Intent intent = new Intent(
+                                                    getApplicationContext(), // 현재 화면의 제어권자이다.
+                                                    Main2Activity.class); // 넘어갈 클래스를 지정한다.
+                                            startActivity(intent); // 다음 화면으로 넘어간다.
 
-            }
-        }
+                                        }
+                                    }
         );
         //화면이동 버튼
+
+        Button btn_3 = (Button)findViewById(R.id.btn_4);
+        btn_3.setOnClickListener(new View.OnClickListener(){
+
+                                        @Override
+                                        public void onClick(View v){
+                                            Intent intent = new Intent(
+                                                    getApplicationContext(), // 현재 화면의 제어권자이다.
+                                                    Main3Activity.class); // 넘어갈 클래스를 지정한다.
+                                            startActivity(intent); // 다음 화면으로 넘어간다.
+
+                                        }
+                                    }
+        );
+        //화면이동 버튼
+
 
         final DBHelper dbHelper = new DBHelper(getApplicationContext(), "LoggerDB.db", null, 1);
         final EditText eventT = (EditText) findViewById(R.id.editText2);
@@ -159,8 +178,6 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
 
         //SQLite
 
-
-        Log.d("GoogleMapActivity", "Init GoogleMap Activity!!");
 
         MapFragment mapFragment = (MapFragment) getFragmentManager().findFragmentById(R.id.googleMap);
         mapFragment.getMapAsync(this);
@@ -220,13 +237,6 @@ public class MainActivity extends Activity implements OnMapReadyCallback, Locati
 
     @Override
     public void onLocationChanged(Location location) {
-        // 수신된 위도, 경도를 출력한다.
-        Log.d("location", "[" + location.getProvider() + "] (" + location.getLatitude() + "," + location.getLongitude() + ")");
-
-        String msg = "현재 위도 : " + location.getLatitude()
-                + " 현재 경도 : " + location.getLongitude();
-
-        Toast.makeText(getBaseContext(), msg, Toast.LENGTH_LONG).show();
 
         lat = location.getLatitude();
         lon = location.getLongitude();

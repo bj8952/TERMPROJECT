@@ -45,4 +45,6 @@ public class DBAadapter extends CursorAdapter {
         View v = inflater.inflate(R.layout.itemlayout, parent, false);
         return v;
     }
+
+
 }

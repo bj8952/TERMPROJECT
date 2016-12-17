@@ -77,8 +77,6 @@ public class DBHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = getReadableDatabase();
         ArrayList<LatLng> result = new ArrayList<LatLng>();
 
-
-
         // DB에서 위도와 경도를 출력하여 LatLng로 저장하고 ArrayList에 모두 저장함
         Cursor cursor = db.rawQuery("SELECT * FROM LOGGER", null);
         while (cursor.moveToNext()) {
@@ -92,8 +90,8 @@ public class DBHelper extends SQLiteOpenHelper {
        }
 
         //테스트용
-        LatLng L1 = new LatLng(37.6, 127.1);
-        LatLng L2 = new LatLng(37.601, 127.101);
+        /*LatLng L1 = new LatLng(37.6, 127.1);
+       LatLng L2 = new LatLng(37.601, 127.101);
         LatLng L3 = new LatLng(37.601, 127.102);
         LatLng L4 = new LatLng(37.602, 127.102);
         LatLng L5 = new LatLng(37.604, 127.103);
@@ -102,7 +100,7 @@ public class DBHelper extends SQLiteOpenHelper {
         result.add(L2);
         result.add(L3);
         result.add(L4);
-        result.add(L5);
+        result.add(L5);*/
 
 
 

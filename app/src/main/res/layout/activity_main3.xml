@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    android:weightSum="1">
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="40dp">
+
+        <Button
+            android:text="입력"
+            android:layout_width="138dp"
+            android:layout_height="35dp"
+            android:id="@+id/button7"
+            android:layout_weight="2.36"
+            android:background="@drawable/white"
+            android:gravity="center_horizontal"/>
+
+        <Button
+            android:text="분석"
+            android:layout_height="35dp"
+            android:id="@+id/button4"
+            android:layout_width="138dp"
+            android:background="@drawable/white"
+            android:gravity="center_horizontal"
+            android:textAppearance="@style/TextAppearance.AppCompat.Button" />
+
+        <Button
+            android:text="목표"
+            android:layout_width="138dp"
+            android:layout_height="35dp"
+            android:id="@+id/button9"
+            android:layout_weight="4.25"
+            android:background="@drawable/white_sel"
+            android:gravity="center_horizontal"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/time_out"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textSize="40sp"
+        android:background="#ffcccc"
+        android:textColor="#777777"
+        android:text="00:00:00" />
+
+    <TextView
+        android:layout_width="fill_parent"
+        android:textSize="25sp"
+        android:text="오늘의 목표"
+        android:gravity="center"
+        android:background="#ffffcc"
+        android:textColor="#777777"
+        android:layout_height="150dp"
+        android:id="@+id/purpose" />
+
+    <TextView
+        android:id="@+id/record"
+        android:layout_width="fill_parent"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:layout_height="100dp" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        >
+
+        <Button
+            android:id="@+id/btn_start"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="myOnClick"
+            android:text="시작"
+            style="@style/Widget.AppCompat.Button.Colored" />
+
+        <Button
+            android:id="@+id/btn_rec"
+            android:layout_width="0px"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:onClick="myOnClick"
+            android:text="기록"
+            android:enabled="false"
+
+            style="@style/Widget.AppCompat.Button.Colored" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="50dp">
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPersonName"
+            android:ems="10"
+            android:id="@+id/editText3"
+            android:hint="목표를 입력하세요"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            style="@android:style/Widget.DeviceDefault.EditText"
+            android:layout_weight="1" />
+
+        <EditText
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="time"
+            android:ems="10"
+            android:id="@+id/editText4"
+            android:hint="목표시간을 입력하세요"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            style="@android:style/Widget.DeviceDefault.EditText"
+            android:layout_weight="1" />
+    </LinearLayout>
+
+    <Button
+        android:text="목표 설정"
+        android:layout_width="match_parent"
+        android:id="@+id/button10"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:visibility="visible"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_height="100dp"
+        android:background="?attr/colorPrimary" />
+
+</LinearLayout>
