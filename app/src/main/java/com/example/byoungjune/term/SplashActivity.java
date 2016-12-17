@@ -4,9 +4,6 @@ import android.app.Activity;
 import android.os.Bundle;
 import android.os.Handler;
 
-/**
- * Created by ByoungJune on 2016-12-16.
- */
 
 public class SplashActivity extends Activity {
     @Override
@@ -21,6 +18,6 @@ public class SplashActivity extends Activity {
             public void run() {
                 finish();
             }
-        }, 3000);// 3 초
+        }, 3000);
     }
 }

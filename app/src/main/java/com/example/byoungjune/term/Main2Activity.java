@@ -120,7 +120,7 @@ public class Main2Activity extends Activity implements OnMapReadyCallback {
 
         for(int i =0 ; i < Loc.size() ; i++){
 
-            googleMap.addMarker(new MarkerOptions().position(Loc.get(i)).title("TEST SPOT"));
+            googleMap.addMarker(new MarkerOptions().position(Loc.get(i)).title("!"));
 
 
 

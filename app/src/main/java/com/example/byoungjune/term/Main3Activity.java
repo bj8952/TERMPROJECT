@@ -21,7 +21,7 @@ public class Main3Activity extends AppCompatActivity {
     final static int Run =1;
     final static int Pause =2;
 
-    int cur_Status = Init; //현재의 상태를 저장할변수를 초기화함.
+    int cur_Status = Init;
     int myCount=1;
     long myBaseTime;
     long myPauseTime;
